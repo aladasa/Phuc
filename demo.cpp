@@ -4,6 +4,10 @@ using namespace std;
 using ll = long long;
 
 const int maxn = 100001;
+//n : số đỉnh
+//m : số cạnh
+//s : đỉnh gốc
+//t : đỉnh đích
 int n, m, s, t;
 
 //Dùng vector để lưu danh sách kề của mỗi đỉnh 
@@ -40,8 +44,8 @@ void dijkstra(int s, int t){
 		//Relaxtion : Thông qua đỉnh u đã biết khoảng cách ngắn nhất tính từ S (d[v] = min(d[v],d[u] + leng(u,v))) 
 		//cập nhật khoảng cách với các đỉnh kề với u
 		for(auto it : adj[u]){
-			int v = it.first;
-			int w = it.second;
+			int v = it.first; //đỉnh
+			int w = it.second; //trọng số
 			if(d[v] > d[u] + w){
 				d[v] = d[u] + w;
 				Q.push({d[v], v});
@@ -49,14 +53,17 @@ void dijkstra(int s, int t){
 			}
 		}
 	}
+	//In ra khoảng cách từ đỉnh s đến t
 	cout << d[t] << endl;
 	vector<int> path;
+	//vòng lặp để tái tạo đường đi ngắn nhất từ đỉnh t về đỉnh s
 	while (true)
 	{
 		path.push_back(t);
 		if (t == s) break;
 		t = pre[t];
 	}
+	// đảo ngược lại từ đỉnh t về đỉnh s thành từ đỉnh s về đỉnh t
 	reverse(begin(path), end(path));
 	for(int x : path){
 		cout << x << ' ';
