@@ -4,7 +4,7 @@ using namespace std;
 using ll = long long;
 
 const int maxn = 100001;
-int n, m, s;
+int n, m, s, t;
 
 //Dùng vector để lưu danh sách kề của mỗi đỉnh 
 vector<pair<int, int>> adj[maxn];
@@ -23,10 +23,11 @@ const int INF = 1e9;
 //Dùng để lưu trữ đỉnh trước đó của mỗi đỉnh. 
 int pre[maxn];
 
-void dijkstra(int s){
+void dijkstra(int s, int t){
 	//Mang luu khoang cach duong di
 	vector<ll> d(n + 1, INF);
 	d[s] = 0;
+	//Hàng đợi ưu tiên
 	priority_queue<pair<int, int>, vector<pair<int, int>> , greater<pair<int,int>>> Q;
 	//{khoang cach, dinh}
 	Q.push({0, s});
@@ -36,20 +37,32 @@ void dijkstra(int s){
 		int u = top.second;
 		int kc = top.first;
 		if(kc > d[u]) continue;
-		//Relaxtion : Thông qua đỉnh u đã biết khoảng cách ngắn nhất tính từ S, cập
-		//nhật khoảng cách với các đỉnh kề với u
+		//Relaxtion : Thông qua đỉnh u đã biết khoảng cách ngắn nhất tính từ S (d[v] = min(d[v],d[u] + leng(u,v))) 
+		//cập nhật khoảng cách với các đỉnh kề với u
 		for(auto it : adj[u]){
 			int v = it.first;
 			int w = it.second;
 			if(d[v] > d[u] + w){
 				d[v] = d[u] + w;
 				Q.push({d[v], v});
+				pre[v] = u;   //đỉnh u là đỉnh trước của v
 			}
 		}
 	}
-	for(int i = 1; i <= n; i++){
-		cout << d[i] << ' ';
+	cout << d[t] << endl;
+	vector<int> path;
+	while (true)
+	{
+		path.push_back(t);
+		if (t == s) break;
+		t = pre[t];
 	}
+	reverse(begin(path), end(path));
+	for(int x : path){
+		cout << x << ' ';
+	}
+	
+
 }
 
 
@@ -57,5 +70,5 @@ int main(){
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
 	nhap();
-	dijkstra(s);
+	dijkstra(s,t);
 }
