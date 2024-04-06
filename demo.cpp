@@ -14,7 +14,7 @@ int n, m, s, t;
 vector<pair<int, int>> adj[maxn];
 
 void nhap(){
-	cin >> n >> m >> s; 
+	cin >> n >> m >> s >> t; 
 	for(int i = 0; i < m; i++){
 		int x, y, w; cin >> x >> y >> w;
 		adj[x].push_back({y, w});
