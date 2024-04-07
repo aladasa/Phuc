@@ -1,41 +1,51 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <limits>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 using ll = long long;
+int n, m, s, t;
+const int maxn = 100001;
+const ll INF = numeric_limits<ll>::max(); // Sử dụng giá trị vô cực phù hợp với kiểu dữ liệu long long
 
 struct Edge {
     int to;
-    int weight;
-    Edge(int _to, int _weight) : to(_to), weight(_weight) {}
+    ll weight;
+    Edge(int _to, ll _weight) : to(_to), weight(_weight) {}
 };
 
-const int INF = numeric_limits<int>::max(); // Sử dụng giá trị vô cực từ thư viện <limits>
+// Dùng vector để lưu danh sách kề của mỗi đỉnh 
+vector<Edge> adj[maxn];
 
-void dijkstra(const vector<vector<Edge>>& graph, int s, int t) {
-    int n = graph.size(); // Số đỉnh trong đồ thị
-    vector<ll> dist(n, INF); // Mảng lưu khoảng cách ngắn nhất từ đỉnh s đến các đỉnh khác
-    vector<int> pre(n, -1); // Mảng lưu đỉnh trước đó của mỗi đỉnh trên đường đi ngắn nhất
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; // Hàng đợi ưu tiên
+void nhap(){
+    cin >> n >> m >> s >> t; 
+    for(int i = 0; i < m; i++){
+        int x, y; ll w; 
+        cin >> x >> y >> w;
+        adj[x].push_back(Edge(y, w));
+        // Nếu đồ thị là vô hướng, bỏ comment dòng dưới
+        // adj[y].push_back(Edge(x, w));
+    }
+}
+
+void dijkstra(int s, int t){
+    vector<ll> dist(n + 1, INF); // Mảng lưu khoảng cách ngắn nhất từ đỉnh s đến các đỉnh khác
+    vector<int> pre(n + 1, -1); // Mảng lưu đỉnh trước đó của mỗi đỉnh trên đường đi ngắn nhất
+    priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<pair<ll, int>>> pq; // Hàng đợi ưu tiên
 
     dist[s] = 0; // Khoảng cách từ s đến chính nó là 0
     pq.push({0, s}); // Thêm đỉnh s vào hàng đợi ưu tiên với khoảng cách là 0
 
     while (!pq.empty()) {
         int u = pq.top().second;
-        int d = pq.top().first;
+        ll d = pq.top().first;
         pq.pop();
 
         // Nếu khoảng cách hiện tại từ s đến u lớn hơn khoảng cách được lưu trong mảng dist, bỏ qua
         if (d > dist[u]) continue;
 
         // Duyệt qua các đỉnh kề của đỉnh u
-        for (const Edge& edge : graph[u]) {
+        for (const Edge& edge : adj[u]) {
             int v = edge.to;
-            int w = edge.weight;
+            ll w = edge.weight;
 
             // Nếu có cách đi từ s đến v tốt hơn, cập nhật khoảng cách và đỉnh trước đó
             if (dist[v] > dist[u] + w) {
@@ -70,23 +80,10 @@ void dijkstra(const vector<vector<Edge>>& graph, int s, int t) {
     cout << endl;
 }
 
-int main() {
-    int n, m, s, t;
-    cin >> n >> m >> s >> t;
-
-    // Khởi tạo danh sách kề của mỗi đỉnh
-    vector<vector<Edge>> graph(n);
-
-    // Đọc thông tin về các cạnh
-    for (int i = 0; i < m; ++i) {
-        int x, y, w;
-        cin >> x >> y >> w;
-        graph[x].push_back(Edge(y, w));
-        
-    }
-
-    // Gọi hàm Dijkstra để tìm đường đi ngắn nhất từ s đến t
-    dijkstra(graph, s, t);
-
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    nhap();
+    dijkstra(s, t);
     return 0;
 }
