@@ -10,26 +10,60 @@ int n, m, s, t;
 vector<pair<int, int>> adj[maxn];
 
 void nhap() {
-    cout << "Nhap so dinh cua do thi: ";
-    cin >> n;
+    // Yêu cầu người dùng nhập số đỉnh và số cạnh cho đến khi nhập đúng
+    while (true) {
+        cout << "Nhap so dinh cua do thi: ";
+        cin >> n;
+        if (n > 0) {
+            break; // Thoát khỏi vòng lặp nếu số đỉnh hợp lệ
+        }
+        cout << "So dinh khong hop le. Vui long nhap lai." << endl;
+    }
 
-    cout << "Nhap so canh cua do thi: ";
-    cin >> m;
+    while (true) {
+        cout << "Nhap so canh cua do thi: ";
+        cin >> m;
+        if (m > 0) {
+            break; // Thoát khỏi vòng lặp nếu số cạnh hợp lệ
+        }
+        cout << "So canh khong hop le. Vui long nhap lai." << endl;
+    }
 
-    cout << "Nhap dinh nguon: ";
-    cin >> s;
+    // Yêu cầu người dùng nhập đỉnh nguồn và đỉnh đích cho đến khi nhập đúng
+    while (true) {
+        cout << "Nhap dinh nguon: ";
+        cin >> s;
+        if (s > 0 && s <= n) {
+            break; // Thoát khỏi vòng lặp nếu đỉnh nguồn hợp lệ
+        }
+        cout << "Dinh nguon khong hop le. Vui long nhap lai." << endl;
+    }
 
-    cout << "Nhap dinh dich: ";
-    cin >> t;
+    while (true) {
+        cout << "Nhap dinh dich: ";
+        cin >> t;
+        if (t > 0 && t <= n) {
+            break; // Thoát khỏi vòng lặp nếu đỉnh đích hợp lệ
+        }
+        cout << "Dinh dich khong hop le. Vui long nhap lai." << endl;
+    }
 
+    // Yêu cầu người dùng nhập danh sách cạnh cho đến khi nhập đúng
     cout << "Nhap danh sach cac canh va trong so tuong ung:\n";
-	for (int i = 0; i < m; ++i) {
-    	int x, y, w;
-    	cin >> x >> y >> w;
-    	adj[x].push_back({y, w});
-	}
-
+    for (int i = 0; i < m; ++i) {
+        int x, y, w;
+        while (true) {
+            cout << "Nhap canh " << i + 1 << ": ";
+            cin >> x >> y >> w;
+            if (x > 0 && x <= n && y > 0 && y <= n && w > 0) {
+                break; // Thoát khỏi vòng lặp nếu cạnh hợp lệ
+            }
+            cout << "Canh khong hop le. Vui long nhap lai." << endl;
+        }
+        adj[x].push_back({y, w});
+    }
 }
+
 
 
 
